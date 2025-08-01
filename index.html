@@ -41,16 +41,25 @@
             color: #3B82F6;
             font-size: 2rem;
         }
-        #ai-strategy-output {
-            background-color: #f8f9fa;
-            border-left: 4px solid #fb923c; /* orange-400 */
+        .ai-output-area {
+            background-color: #1F2937; /* gray-800 */
             padding: 1rem;
             margin-top: 1rem;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: #374151; /* gray-700 */
-            border-radius: 0 8px 8px 0;
-            min-height: 100px;
+            border-radius: 8px;
+            /* ** FIX: Set a fixed height and make it scrollable ** */
+            height: 200px; 
+            overflow-y: auto;
+        }
+        /* Custom scrollbar for a better look */
+        .ai-output-area::-webkit-scrollbar {
+            width: 8px;
+        }
+        .ai-output-area::-webkit-scrollbar-track {
+            background: #374151; /* gray-700 */
+        }
+        .ai-output-area::-webkit-scrollbar-thumb {
+            background-color: #fb923c; /* orange-400 */
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -122,7 +131,7 @@
                 </div>
             </div>
 
-            <!-- NEW Slide 4: Our Process -->
+            <!-- Slide 4: Our Process -->
             <div class="slide absolute inset-0 flex-col justify-center p-12">
                 <div class="slide-content w-full">
                     <h2 class="text-4xl font-bold text-gray-800 mb-8">How It Works: The Customer Journey</h2>
@@ -154,92 +163,50 @@
                 </div>
             </div>
             
-            <!-- Slide 5: Value for Partners (was Monetization) -->
+            <!-- Slide 5: Value for Partners -->
             <div class="slide absolute inset-0 flex-col justify-center p-12 bg-gray-800 text-white">
                 <div class="slide-content w-full">
-                    <h2 class="text-4xl font-bold mb-8">Value for Partners: A Win-Win Model</h2>
-                    <p class="text-lg text-gray-300 mb-8">Our service is free for customers. We generate revenue by providing high-quality, pre-qualified leads to our trusted partners.</p>
-                    <div class="flex justify-around items-center">
-                        <div class="text-center">
-                            <div class="illustration-icon mx-auto">🏢</div>
-                            <p class="mt-2 font-bold">Dealerships</p>
-                            <p class="text-sm text-gray-400">Receive confirmed sales leads.</p>
+                    <h2 class="text-4xl font-bold mb-4">Value for Partners: A Win-Win Model</h2>
+                    <p class="text-lg text-gray-300 mb-6">We provide high-quality, pre-qualified leads to our trusted partners, driving confirmed sales and new business.</p>
+                    <div class="bg-gray-900 p-6 rounded-lg">
+                        <h3 class="text-2xl font-bold text-orange-400 mb-4 text-center">✨ AI Pitch Assistant</h3>
+                        <div class="flex items-center justify-center space-x-4">
+                            <label for="partner-select" class="font-semibold">Select Partner Type:</label>
+                            <select id="partner-select" class="p-2 border rounded-md bg-gray-700 border-gray-600 text-white">
+                                <option value="Dealerships">Dealerships</option>
+                                <option value="Service Providers">Service Providers</option>
+                                <option value="Insurers">Insurers</option>
+                            </select>
+                            <button id="generate-pitch-btn" class="bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition">Generate Pitch</button>
                         </div>
-                        <div class="text-2xl font-bold text-orange-500">+</div>
-                        <div class="text-center">
-                            <div class="illustration-icon mx-auto">🔧</div>
-                            <p class="mt-2 font-bold">Service Providers</p>
-                             <p class="text-sm text-gray-400">Gain new customers for accessories.</p>
-                        </div>
-                        <div class="text-2xl font-bold text-orange-500">+</div>
-                        <div class="text-center">
-                            <div class="illustration-icon mx-auto">📄</div>
-                            <p class="mt-2 font-bold">Insurers</p>
-                             <p class="text-sm text-gray-400">Get referrals for policy sales.</p>
-                        </div>
+                        <div id="ai-pitch-output" class="ai-output-area"><p class="text-gray-500 text-center mt-4">Select a partner type to generate a tailored value proposition.</p></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Slide 6: Why We Will Succeed -->
-            <div class="slide absolute inset-0 flex-col justify-center p-12">
-                <div class="slide-content w-full">
-                    <h2 class="text-4xl font-bold text-gray-800 mb-8">Our Competitive Edge</h2>
-                    <div class="grid grid-cols-2 gap-6 text-lg">
-                        <p class="bg-gray-100 p-4 rounded-lg"><strong>High Demand:</strong> Solving a real, widespread problem.</p>
-                        <p class="bg-gray-100 p-4 rounded-lg"><strong>Low Capital:</strong> Scalable, service-based model.</p>
-                        <p class="bg-gray-100 p-4 rounded-lg"><strong>Trusted Brand:</strong> Building long-term relationships post-sale.</p>
-                        <p class="bg-gray-100 p-4 rounded-lg"><strong>Win-Win Model:</strong> Partners value our high-quality leads.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 7: The Road Ahead -->
+            <!-- Slide 6: The Road Ahead & AI Dashboard -->
             <div class="slide absolute inset-0 flex-col justify-center p-12 bg-gray-800 text-white">
                 <div class="slide-content w-full">
-                    <h2 class="text-4xl font-bold mb-6">Expansion Opportunities</h2>
-                    <div class="flex space-x-8 items-center mb-6">
-                        <div class="text-center p-2">
-                            <div class="text-4xl">📍</div>
-                            <h3 class="font-bold mt-2">New Cities</h3>
-                            <p class="text-sm">Bengaluru, Pune</p>
-                        </div>
-                        <div class="text-3xl text-gray-600">→</div>
-                        <div class="text-center p-2">
-                            <div class="text-4xl">🤝</div>
-                            <h3 class="font-bold mt-2">Franchise Model</h3>
-                             <p class="text-sm">Scale nationally</p>
-                        </div>
-                        <div class="text-3xl text-gray-600">→</div>
-                        <div class="text-center p-2">
-                            <div class="text-4xl">📱</div>
-                            <h3 class="font-bold mt-2">Mobile App</h3>
-                             <p class="text-sm">Recommendation Quiz</p>
-                        </div>
-                         <div class="text-3xl text-gray-600">→</div>
-                        <div class="text-center p-2">
-                            <div class="text-4xl">▶️</div>
-                            <h3 class="font-bold mt-2">Digital Brand</h3>
-                             <p class="text-sm">YouTube & Socials</p>
-                        </div>
-                    </div>
-                    <!-- Gemini API Feature -->
-                    <div class="mt-6 border-t border-gray-700 pt-4">
-                         <h3 class="text-2xl font-bold text-blue-400">✨ AI Strategy Generator</h3>
-                         <div class="flex items-center space-x-4 mt-2">
-                            <select id="city-select" class="p-2 border rounded-md bg-gray-900 border-gray-600">
+                    <h2 class="text-4xl font-bold mb-4 text-center">AI Business Command Center</h2>
+                     <div class="bg-gray-900 p-6 rounded-lg">
+                        <h3 class="text-2xl font-bold text-blue-400 text-center mb-4">✨ AI Strategy Generator</h3>
+                        <div class="flex items-center justify-center space-x-4">
+                            <label for="city-select" class="font-semibold">Select Target City:</label>
+                            <select id="city-select" class="p-2 border rounded-md bg-gray-700 border-gray-600 text-white">
                                 <option value="Bengaluru">Bengaluru</option>
                                 <option value="Pune">Pune</option>
                                 <option value="Chennai">Chennai</option>
+                                <option value="Mumbai">Mumbai</option>
+                                <option value="Hyderabad">Hyderabad</option>
                             </select>
-                            <button id="generate-strategy-btn" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition">Generate Market Strategy</button>
-                         </div>
-                         <div id="ai-strategy-output" class="bg-gray-900 border-l-4 border-orange-500 text-gray-300"><p class="text-gray-500">Select a city and click generate to see an AI-powered market entry plan.</p></div>
+                            <button id="generate-strategy-btn" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition">Generate Report</button>
+                        </div>
+                        <div id="ai-strategy-output" class="ai-output-area"><p class="text-gray-500 text-center mt-4">Select a city and click generate to see an AI-powered market entry plan.</p></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Slide 8: Call to Action -->
+            <!-- Slide 7: Call to Action -->
             <div class="slide absolute inset-0 flex-col items-center justify-center text-center p-8 bg-gray-900 text-white">
                 <div class="slide-content w-full flex flex-col items-center">
                     <h2 class="text-5xl font-bold">Thank You</h2>
@@ -263,27 +230,64 @@
     </div>
 
     <script>
-        // --- GEMINI API HELPER ---
-        async function callGeminiAPI(prompt) {
-            const apiKey = ""; // This will be handled by the execution environment
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-            const payload = { contents: [{ parts: [{ text: prompt }] }] };
+        // --- HIGH-FIDELITY AI SIMULATION DATA ---
+        const simulatedAIReports = {
+            "Bengaluru": {
+                title: "Market Entry Report: Bengaluru",
+                audience: "<strong>Target Audience: Tech Professionals & Start-up Founders.</strong> Focus on tech-savvy individuals aged 28-45 who value efficiency, performance, and modern features. Highlight EV options and smart car technology.",
+                partnerships: "<strong>Partnership Strategy: Premium & EV Dealerships.</strong> Prioritize partnerships with dealers for brands like Tesla, Hyundai (Ioniq 5), Kia (EV6), and luxury brands (Mercedes, BMW) located in tech hubs like Koramangala and Whitefield.",
+                marketing: "<strong>Marketing Outreach: Digital & Corporate Channels.</strong> Launch targeted ad campaigns on LinkedIn and tech-focused Instagram pages. Establish corporate tie-ups with major tech parks to offer exclusive consultation sessions."
+            },
+            "Pune": {
+                title: "Market Entry Report: Pune",
+                audience: "<strong>Target Audience: Manufacturing Professionals & Families.</strong> Focus on established professionals in the automotive and manufacturing sectors, and families looking for reliable, spacious SUVs and sedans.",
+                partnerships: "<strong>Partnership Strategy: Major Domestic & SUV Brands.</strong> Forge strong relationships with Mahindra, Tata Motors, and Maruti Suzuki Arena/Nexa dealerships. Partner with well-regarded accessory shops in the PCMC area.",
+                marketing: "<strong>Marketing Outreach: Community & Referral-Based.</strong> Engage in local automotive clubs and communities on Facebook. Launch a strong referral program to leverage word-of-mouth from the city's established professional network."
+            },
+            "Chennai": {
+                title: "Market Entry Report: Chennai",
+                audience: "<strong>Target Audience: Industrialists & Traditional Buyers.</strong> Focus on business owners and established families who prioritize durability, low maintenance, and brand reputation. Strong market for sedans and reliable hatchbacks.",
+                partnerships: "<strong>Partnership Strategy: Legacy & High-Volume Dealerships.</strong> Build partnerships with top dealers for Toyota, Honda, and Hyundai. Also, connect with respected local service centers for post-sale tie-ups.",
+                marketing: "<strong>Marketing Outreach: Trust-Building & Vernacular Content.</strong> Use customer testimonials and reviews as the primary marketing tool. Create content in both English and Tamil to build trust and connect with a wider audience."
+            },
+            "Mumbai": {
+                title: "Market Entry Report: Mumbai",
+                audience: "<strong>Target Audience: Finance Professionals & Media Personalities.</strong> Focus on high-income individuals looking for luxury, status, and compact cars suitable for city traffic. Strong interest in the latest models and premium features.",
+                partnerships: "<strong>Partnership Strategy: Luxury & Compact Car Dealerships.</strong> Secure partnerships with dealers of Audi, Mercedes-Benz, and BMW in South Mumbai. Also, focus on dealers for compact SUVs and premium hatchbacks.",
+                marketing: "<strong>Marketing Outreach: Lifestyle & Influencer Marketing.</strong> Collaborate with lifestyle and automotive influencers on Instagram. Host exclusive preview events for new luxury car launches with our partner dealers."
+            },
+            "Hyderabad": {
+                title: "Market Entry Report: Hyderabad (Home Market)",
+                audience: "<strong>Target Audience: IT Professionals & Affluent Families.</strong> A diverse market with strong demand for both tech-forward SUVs and premium luxury vehicles. Focus on clients who value a hassle-free, premium service experience.",
+                partnerships: "<strong>Partnership Strategy: Broad-Spectrum Dealerships.</strong> Deepen existing relationships across all major brands, from Maruti Suzuki to luxury imports. Onboard exclusive detailing and modification partners in Jubilee Hills and Gachibowli.",
+                marketing: "<strong>Marketing Outreach: Dominate Digital & Local Events.</strong> Become the top-ranking car consultant on Google for Hyderabad. Sponsor local luxury and lifestyle events to enhance brand visibility and capture high-intent leads."
+            }
+        };
+        
+        const simulatedAIPitches = {
+            "Dealerships": {
+                title: "Pitch for Dealership Partners",
+                content: "DriveWise delivers high-intent, pre-qualified buyers directly to your showroom. Our clients are already informed and ready to purchase, which means a higher conversion rate and a faster sales cycle for your team. Partner with us to access a new stream of serious customers and increase your sales volume."
+            },
+            "Service Providers": {
+                title: "Pitch for Service Partners (Accessories/Detailing)",
+                content: "Partner with DriveWise to become a trusted, recommended vendor for new car owners. We connect you with customers at the exact moment they are looking for accessories, PPF, and detailing services, providing you with a consistent flow of new business without any marketing spend from your side."
+            },
+            "Insurers": {
+                title: "Pitch for Insurance Partners",
+                content: "By partnering with DriveWise, you gain direct access to new car buyers who need insurance. We simplify the process by recommending your best-suited policies to our clients, providing you with highly qualified referrals and streamlining your customer acquisition process."
+            }
+        };
 
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                if (!response.ok) throw new Error(`API call failed: ${response.status}`);
-                const result = await response.json();
-                if (result.candidates && result.candidates[0].content.parts[0].text) {
-                    return result.candidates[0].content.parts[0].text;
-                }
-                return "No response from AI.";
-            } catch (error) {
-                console.error("Gemini API Error:", error);
-                return "Error contacting AI. Please check the console.";
+        // --- SIMULATED GEMINI API HELPER ---
+        async function callGeminiAPI(type, key) {
+            console.log(`Simulating AI call for ${type}: ${key}`);
+            await new Promise(resolve => setTimeout(resolve, 1200)); // Simulate network delay
+            if (type === 'strategy') {
+                return simulatedAIReports[key] || { title: "Error", audience: "No data found for this city.", partnerships: "", marketing: "" };
+            }
+            if (type === 'pitch') {
+                return simulatedAIPitches[key] || { title: "Error", content: "No data found for this partner type." };
             }
         }
 
@@ -292,9 +296,6 @@
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
             const progressBar = document.getElementById('progress-bar');
-            const generateBtn = document.getElementById('generate-strategy-btn');
-            const citySelect = document.getElementById('city-select');
-            const strategyOutput = document.getElementById('ai-strategy-output');
             let currentSlide = 0;
 
             function animateSlideContent(slide) {
@@ -324,7 +325,7 @@
                 if (currentSlide < slides.length - 1) {
                     currentSlide++;
                 } else {
-                    currentSlide = 0; // Loop back to the first slide
+                    currentSlide = 0;
                 }
                 updatePresentation();
             });
@@ -336,32 +337,52 @@
                 }
             });
 
-            // --- Gemini Feature Logic ---
-            generateBtn.addEventListener('click', async () => {
-                const selectedCity = citySelect.value;
-                strategyOutput.innerHTML = `<p class="text-gray-500">✨ Generating strategy for ${selectedCity}...</p>`;
-                
-                const prompt = `
-                    You are a business strategy consultant. My company, "DriveWise," is an automotive consulting firm based in Hyderabad, India. 
-                    Our core service is guiding car buyers to the right vehicle and simplifying the purchase process through dealership partnerships.
-                    Based on this, generate a high-level market entry strategy for expanding into ${selectedCity}. 
-                    The strategy should be a few bullet points covering:
-                    1. Target Audience Focus (specific to the city's demographics, e.g., tech professionals, families).
-                    2. Partnership Strategy (types of dealerships or services to partner with).
-                    3. Marketing & Outreach (initial marketing channels).
-                    Keep it concise and actionable.
-                `;
+            // --- AI Strategy Generator Logic ---
+            const generateStrategyBtn = document.getElementById('generate-strategy-btn');
+            const citySelect = document.getElementById('city-select');
+            const strategyOutput = document.getElementById('ai-strategy-output');
+            
+            if (generateStrategyBtn) {
+                generateStrategyBtn.addEventListener('click', async () => {
+                    const selectedCity = citySelect.value;
+                    strategyOutput.innerHTML = `<div class="flex justify-center items-center h-full"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div><p class="ml-3 text-gray-400">Generating AI Report for ${selectedCity}...</p></div>`;
+                    const report = await callGeminiAPI('strategy', selectedCity);
+                    strategyOutput.innerHTML = `
+                        <h4 class="text-xl font-bold text-orange-500 mb-4">${report.title}</h4>
+                        <div class="space-y-4">
+                            <div class="bg-gray-700 p-3 rounded-lg">
+                                <h5 class="font-bold text-blue-400">Target Audience Focus</h5>
+                                <p class="text-gray-300 text-sm">${report.audience}</p>
+                            </div>
+                            <div class="bg-gray-700 p-3 rounded-lg">
+                                <h5 class="font-bold text-blue-400">Partnership Strategy</h5>
+                                <p class="text-gray-300 text-sm">${report.partnerships}</p>
+                            </div>
+                            <div class="bg-gray-700 p-3 rounded-lg">
+                                <h5 class="font-bold text-blue-400">Marketing & Outreach</h5>
+                                <p class="text-gray-300 text-sm">${report.marketing}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
 
-                const response = await callGeminiAPI(prompt);
-                // Simple markdown-to-html conversion
-                const formattedResponse = response
-                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                    .replace(/\* (.*?)(?=\n\*|$)/g, '<li class="mb-2">$1</li>')
-                    .replace(/<\/li>/g, '</li></ul>')
-                    .replace(/<li/g, '<ul><li');
+            // --- AI Pitch Generator Logic ---
+            const generatePitchBtn = document.getElementById('generate-pitch-btn');
+            const partnerSelect = document.getElementById('partner-select');
+            const pitchOutput = document.getElementById('ai-pitch-output');
 
-                strategyOutput.innerHTML = formattedResponse;
-            });
+            if (generatePitchBtn) {
+                generatePitchBtn.addEventListener('click', async () => {
+                    const selectedPartner = partnerSelect.value;
+                    pitchOutput.innerHTML = `<div class="flex justify-center items-center h-full"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div><p class="ml-3 text-gray-400">Generating Pitch for ${selectedPartner}...</p></div>`;
+                    const pitch = await callGeminiAPI('pitch', selectedPartner);
+                    pitchOutput.innerHTML = `
+                        <h4 class="text-lg font-bold text-orange-400 mb-2">${pitch.title}</h4>
+                        <p class="text-gray-300">${pitch.content}</p>
+                    `;
+                });
+            }
 
             updatePresentation();
         });
