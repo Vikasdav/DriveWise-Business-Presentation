@@ -11,7 +11,9 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #F3F4F6;
+            background-color: #111827; /* gray-900 */
+            background-image: radial-gradient(circle at top left, #4c1d95, transparent 40%), radial-gradient(circle at bottom right, #4338ca, transparent 40%);
+            background-attachment: fixed;
         }
         .slide {
             display: none;
@@ -25,11 +27,18 @@
         .slide-content > * {
             opacity: 0;
             transform: translateY(20px);
-            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
         .progress-bar-fill {
             transition: width 0.4s ease-in-out;
         }
+        
+        /* --- Animation & Hover Effects --- */
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
+        }
+
         .illustration-icon {
             display: flex;
             align-items: center;
@@ -37,20 +46,43 @@
             width: 64px;
             height: 64px;
             border-radius: 9999px;
-            background-color: rgba(59, 130, 246, 0.1);
-            color: #3B82F6;
+            background-color: rgba(139, 92, 246, 0.1); /* violet-500 with alpha */
+            color: #a78bfa; /* violet-400 */
             font-size: 2rem;
+            flex-shrink: 0;
+            animation: float 4s ease-in-out infinite;
+            transition: all 0.3s ease;
         }
+
+        .interactive-item {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .interactive-item:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+
+        button {
+            transition: all 0.2s ease-in-out;
+        }
+
+        button:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+        }
+
         .ai-output-area {
             background-color: #1F2937; /* gray-800 */
             padding: 1rem;
             margin-top: 1rem;
             border-radius: 8px;
-            /* ** FIX: Set a fixed height and make it scrollable ** */
-            height: 200px; 
+            height: 220px; 
             overflow-y: auto;
+            border: 1px solid #374151;
         }
-        /* Custom scrollbar for a better look */
+        /* Custom scrollbar for the new theme */
         .ai-output-area::-webkit-scrollbar {
             width: 8px;
         }
@@ -58,57 +90,57 @@
             background: #374151; /* gray-700 */
         }
         .ai-output-area::-webkit-scrollbar-thumb {
-            background-color: #fb923c; /* orange-400 */
+            background-color: #8b5cf6; /* violet-500 */
             border-radius: 4px;
         }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+<body class="flex flex-col items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden">
+    <div class="w-full max-w-4xl bg-gray-900/40 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden">
         <!-- Slide Container -->
         <div id="presentation-container" class="relative w-full h-[550px]">
             
             <!-- Slide 1: Title Slide -->
-            <div class="slide active absolute inset-0 flex-col items-center justify-center text-center p-8 bg-gray-900 text-white">
+            <div class="slide active absolute inset-0 flex-col items-center justify-center text-center p-8">
                 <div class="slide-content w-full flex flex-col items-center">
-                    <h1 class="text-6xl font-extrabold text-orange-500">DriveWise</h1>
+                    <h1 class="text-6xl font-extrabold text-violet-500">DriveWise</h1>
                     <p class="mt-4 text-2xl text-gray-300">Your Personal Guide to the Perfect Car</p>
-                    <p class="mt-8 text-lg border-t border-gray-700 pt-4">A Business Plan Presentation</p>
+                    <p class="mt-8 text-lg border-t border-gray-700 pt-4 text-white">A Business Plan Presentation</p>
                 </div>
             </div>
 
             <!-- Slide 2: The Problem -->
-            <div class="slide absolute inset-0 flex-col justify-center p-12">
+            <div class="slide absolute inset-0 flex-col justify-center p-12 text-white">
                 <div class="slide-content w-full">
-                    <h2 class="text-4xl font-bold text-gray-800 mb-8">The Modern Car Buyer's Dilemma</h2>
-                    <div class="grid grid-cols-2 gap-8 text-lg">
+                    <h2 class="text-4xl font-bold text-gray-100 mb-8">The Modern Car Buyer's Dilemma</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
                         <div class="flex items-start">
                             <div class="illustration-icon mr-4">🤔</div>
                             <div>
-                                <h3 class="font-bold text-blue-600">Choice Overload</h3>
-                                <p class="text-gray-600">Buyers are confused by hundreds of models, variants, and features.</p>
+                                <h3 class="font-bold text-violet-400">Choice Overload</h3>
+                                <p class="text-gray-300">Buyers are confused by hundreds of models, variants, and features.</p>
                             </div>
                         </div>
                         <div class="flex items-start">
-                            <div class="illustration-icon mr-4">⏳</div>
+                            <div class="illustration-icon mr-4" style="animation-delay: -1s;">⏳</div>
                             <div>
-                                <h3 class="font-bold text-blue-600">Wasted Time</h3>
-                                <p class="text-gray-600">Endless dealership visits lead to frustration and high-pressure tactics.</p>
+                                <h3 class="font-bold text-violet-400">Wasted Time</h3>
+                                <p class="text-gray-300">Endless dealership visits lead to frustration and high-pressure tactics.</p>
                             </div>
                         </div>
                         <div class="flex items-start">
-                            <div class="illustration-icon mr-4">💸</div>
+                            <div class="illustration-icon mr-4" style="animation-delay: -2s;">💸</div>
                             <div>
-                                <h3 class="font-bold text-blue-600">Hidden Costs</h3>
-                                <p class="text-gray-600">Overpriced insurance and unclear post-sale expenses cause anxiety.</p>
+                                <h3 class="font-bold text-violet-400">Hidden Costs</h3>
+                                <p class="text-gray-300">Overpriced insurance and unclear post-sale expenses cause anxiety.</p>
                             </div>
                         </div>
                         <div class="flex items-start">
-                            <div class="illustration-icon mr-4">❓</div>
+                            <div class="illustration-icon mr-4" style="animation-delay: -3s;">❓</div>
                             <div>
-                                <h3 class="font-bold text-blue-600">Lack of Transparency</h3>
-                                <p class="text-gray-600">Unclear delivery timelines and a complex process build distrust.</p>
+                                <h3 class="font-bold text-violet-400">Lack of Transparency</h3>
+                                <p class="text-gray-300">Unclear delivery timelines and a complex process build distrust.</p>
                             </div>
                         </div>
                     </div>
@@ -116,180 +148,165 @@
             </div>
 
             <!-- Slide 3: Our Solution -->
-            <div class="slide absolute inset-0 flex-col justify-center p-12 bg-gray-800 text-white">
+            <div class="slide absolute inset-0 flex-col justify-center p-12 text-white">
                 <div class="slide-content w-full">
                     <h2 class="text-4xl font-bold mb-6">Our Solution: An End-to-End Concierge</h2>
                     <p class="text-lg text-gray-300 mb-6">We provide a complete, one-stop service that covers the entire car ownership lifecycle.</p>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center text-sm">
-                        <div class="bg-gray-700 p-3 rounded-lg">Personalized Recommendations</div>
-                        <div class="bg-gray-700 p-3 rounded-lg">Best Deal Facilitation</div>
-                        <div class="bg-gray-700 p-3 rounded-lg">Unbiased Insurance Consultation</div>
-                        <div class="bg-gray-700 p-3 rounded-lg">Delivery Tracking & Follow-up</div>
-                        <div class="bg-gray-700 p-3 rounded-lg">Post-Sale Accessory Guidance</div>
-                        <div class="bg-gray-700 p-3 rounded-lg">VIP Concierge Package</div>
+                    <div class="flex flex-wrap justify-center gap-3 text-center text-sm">
+                        <div class="bg-white/5 border border-white/10 p-3 rounded-lg interactive-item">Personalized Recommendations</div>
+                        <div class="bg-white/5 border border-white/10 p-3 rounded-lg interactive-item">Best Deal Facilitation</div>
+                        <div class="bg-white/5 border border-white/10 p-3 rounded-lg interactive-item">Unbiased Insurance Consultation</div>
+                        <div class="bg-white/5 border border-white/10 p-3 rounded-lg interactive-item">Delivery Tracking & Follow-up</div>
+                        <div class="bg-white/5 border border-white/10 p-3 rounded-lg interactive-item">Free PDI Checks</div>
+                        <div class="bg-white/5 border border-white/10 p-3 rounded-lg interactive-item">Post-Sale Accessory Guidance</div>
+                        <div class="bg-white/5 border border-white/10 p-3 rounded-lg interactive-item">VIP Concierge Package</div>
                     </div>
                 </div>
             </div>
 
             <!-- Slide 4: Our Process -->
-            <div class="slide absolute inset-0 flex-col justify-center p-12">
+            <div class="slide absolute inset-0 flex-col justify-center p-12 text-white">
                 <div class="slide-content w-full">
-                    <h2 class="text-4xl font-bold text-gray-800 mb-8">How It Works: The Customer Journey</h2>
-                    <div class="flex items-center justify-between text-center">
-                        <div class="w-1/4">
+                    <h2 class="text-4xl font-bold text-gray-100 mb-8">How It Works: The Customer Journey</h2>
+                    <div class="flex flex-col md:flex-row items-center justify-between text-center gap-4">
+                        <div class="w-full md:w-1/4 interactive-item p-4 rounded-lg bg-white/5 border border-white/10">
                             <div class="illustration-icon mx-auto">1</div>
                             <h3 class="font-bold mt-2">Consultation</h3>
-                            <p class="text-sm text-gray-600">We understand the client's budget, needs, and preferences.</p>
+                            <p class="text-sm text-gray-300">We understand the client's budget, needs, and preferences.</p>
                         </div>
-                        <div class="flex-grow text-2xl text-gray-300">→</div>
-                        <div class="w-1/4">
-                            <div class="illustration-icon mx-auto">2</div>
+                        <div class="flex-grow text-2xl text-gray-600 hidden md:block">→</div>
+                        <div class="w-full md:w-1/4 interactive-item p-4 rounded-lg bg-white/5 border border-white/10">
+                            <div class="illustration-icon mx-auto" style="animation-delay: -1s;">2</div>
                             <h3 class="font-bold mt-2">Recommendation</h3>
-                            <p class="text-sm text-gray-600">We provide a shortlist of the top 3 best-fit cars.</p>
+                            <p class="text-sm text-gray-300">We provide a shortlist of the top 3 best-fit cars.</p>
                         </div>
-                        <div class="flex-grow text-2xl text-gray-300">→</div>
-                        <div class="w-1/4">
-                            <div class="illustration-icon mx-auto">3</div>
+                        <div class="flex-grow text-2xl text-gray-600 hidden md:block">→</div>
+                        <div class="w-full md:w-1/4 interactive-item p-4 rounded-lg bg-white/5 border border-white/10">
+                            <div class="illustration-icon mx-auto" style="animation-delay: -2s;">3</div>
                             <h3 class="font-bold mt-2">Facilitation</h3>
-                            <p class="text-sm text-gray-600">We connect with our partner network to secure the best deal.</p>
+                            <p class="text-sm text-gray-300">We connect with our partner network to secure the best deal.</p>
                         </div>
-                        <div class="flex-grow text-2xl text-gray-300">→</div>
-                        <div class="w-1/4">
-                            <div class="illustration-icon mx-auto">4</div>
+                        <div class="flex-grow text-2xl text-gray-600 hidden md:block">→</div>
+                        <div class="w-full md:w-1/4 interactive-item p-4 rounded-lg bg-white/5 border border-white/10">
+                            <div class="illustration-icon mx-auto" style="animation-delay: -3s;">4</div>
                             <h3 class="font-bold mt-2">Delivery & Beyond</h3>
-                            <p class="text-sm text-gray-600">We track delivery and assist with post-sale needs like insurance.</p>
+                            <p class="text-sm text-gray-300">We track delivery and assist with post-sale needs like insurance.</p>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Slide 5: Value for Partners -->
-            <div class="slide absolute inset-0 flex-col justify-center p-12 bg-gray-800 text-white">
+            <!-- Slide 5: Value for Partners (Gemini Powered) -->
+            <div class="slide absolute inset-0 flex-col justify-center p-12 text-white">
                 <div class="slide-content w-full">
                     <h2 class="text-4xl font-bold mb-4">Value for Partners: A Win-Win Model</h2>
                     <p class="text-lg text-gray-300 mb-6">We provide high-quality, pre-qualified leads to our trusted partners, driving confirmed sales and new business.</p>
-                    <div class="bg-gray-900 p-6 rounded-lg">
-                        <h3 class="text-2xl font-bold text-orange-400 mb-4 text-center">✨ AI Pitch Assistant</h3>
-                        <div class="flex items-center justify-center space-x-4">
-                            <label for="partner-select" class="font-semibold">Select Partner Type:</label>
-                            <select id="partner-select" class="p-2 border rounded-md bg-gray-700 border-gray-600 text-white">
+                    <div class="bg-black/20 backdrop-blur-md border border-white/10 p-6 rounded-lg">
+                        <h3 class="text-2xl font-bold text-violet-400 mb-4 text-center">✨ Partner Pitch Generator</h3>
+                        <div class="flex flex-col sm:flex-row items-center justify-center sm:space-x-4 space-y-4 sm:space-y-0">
+                            <label for="partner-select" class="font-semibold whitespace-nowrap">Select Partner Type:</label>
+                            <select id="partner-select" class="w-full sm:w-auto p-2 border rounded-md bg-gray-700 border-gray-600 text-white">
                                 <option value="Dealerships">Dealerships</option>
                                 <option value="Service Providers">Service Providers</option>
                                 <option value="Insurers">Insurers</option>
                             </select>
-                            <button id="generate-pitch-btn" class="bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition">Generate Pitch</button>
+                            <button id="generate-pitch-btn" class="w-full sm:w-auto bg-violet-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-violet-700 transition">Generate Pitch</button>
                         </div>
-                        <div id="ai-pitch-output" class="ai-output-area"><p class="text-gray-500 text-center mt-4">Select a partner type to generate a tailored value proposition.</p></div>
+                        <div id="ai-pitch-output" class="ai-output-area"><p class="text-gray-400 text-center mt-4">Select a partner type to generate a tailored value proposition.</p></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Slide 6: The Road Ahead & AI Dashboard -->
-            <div class="slide absolute inset-0 flex-col justify-center p-12 bg-gray-800 text-white">
+            <!-- Slide 6: The Road Ahead (Gemini Powered) -->
+            <div class="slide absolute inset-0 flex-col justify-center p-12 text-white">
                 <div class="slide-content w-full">
-                    <h2 class="text-4xl font-bold mb-4 text-center">AI Business Command Center</h2>
-                     <div class="bg-gray-900 p-6 rounded-lg">
-                        <h3 class="text-2xl font-bold text-blue-400 text-center mb-4">✨ AI Strategy Generator</h3>
-                        <div class="flex items-center justify-center space-x-4">
-                            <label for="city-select" class="font-semibold">Select Target City:</label>
-                            <select id="city-select" class="p-2 border rounded-md bg-gray-700 border-gray-600 text-white">
+                    <h2 class="text-4xl font-bold mb-4 text-center">Business Strategy Dashboard</h2>
+                     <div class="bg-black/20 backdrop-blur-md border border-white/10 p-6 rounded-lg">
+                        <h3 class="text-2xl font-bold text-violet-400 text-center mb-4">✨ Market Strategy Generator</h3>
+                        <div class="flex flex-col sm:flex-row items-center justify-center sm:space-x-4 space-y-4 sm:space-y-0">
+                            <label for="city-select" class="font-semibold whitespace-nowrap">Select Target City:</label>
+                            <select id="city-select" class="w-full sm:w-auto p-2 border rounded-md bg-gray-700 border-gray-600 text-white">
                                 <option value="Bengaluru">Bengaluru</option>
                                 <option value="Pune">Pune</option>
                                 <option value="Chennai">Chennai</option>
                                 <option value="Mumbai">Mumbai</option>
                                 <option value="Hyderabad">Hyderabad</option>
                             </select>
-                            <button id="generate-strategy-btn" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition">Generate Report</button>
+                            <button id="generate-strategy-btn" class="w-full sm:w-auto bg-violet-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-violet-700 transition">Generate Report</button>
                         </div>
-                        <div id="ai-strategy-output" class="ai-output-area"><p class="text-gray-500 text-center mt-4">Select a city and click generate to see an AI-powered market entry plan.</p></div>
+                        <div id="ai-strategy-output" class="ai-output-area"><p class="text-gray-400 text-center mt-4">Select a city and click generate to see a market entry plan.</p></div>
                     </div>
                 </div>
             </div>
 
             <!-- Slide 7: Call to Action -->
-            <div class="slide absolute inset-0 flex-col items-center justify-center text-center p-8 bg-gray-900 text-white">
+            <div class="slide absolute inset-0 flex-col items-center justify-center text-center p-8 text-white">
                 <div class="slide-content w-full flex flex-col items-center">
                     <h2 class="text-5xl font-bold">Thank You</h2>
                     <p class="mt-4 text-2xl text-gray-300">Let's build the future of car buying.</p>
-                    <p class="mt-8 text-xl text-orange-500">Questions & Discussion</p>
+                    <p class="mt-8 text-xl text-violet-500">Questions & Discussion</p>
                 </div>
             </div>
 
         </div>
 
         <!-- Navigation & Progress Bar -->
-        <div class="bg-gray-200 p-4 flex items-center justify-between">
-            <button id="prev-btn" class="bg-gray-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-700 transition disabled:opacity-50 disabled:cursor-not-allowed">Previous</button>
+        <div class="bg-gray-900/20 backdrop-blur-md p-4 flex items-center justify-between border-t border-white/10">
+            <button id="prev-btn" class="bg-gray-700 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-600 transition disabled:opacity-50 disabled:cursor-not-allowed">Previous</button>
             <div class="flex-grow mx-4">
-                <div class="w-full bg-gray-300 rounded-full h-2.5">
-                    <div id="progress-bar" class="bg-orange-500 h-2.5 rounded-full progress-bar-fill"></div>
+                <div class="w-full bg-gray-700 rounded-full h-2.5">
+                    <div id="progress-bar" class="bg-violet-500 h-2.5 rounded-full progress-bar-fill"></div>
                 </div>
             </div>
-            <button id="next-btn" class="bg-orange-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-orange-600 transition">Next</button>
+            <button id="next-btn" class="bg-violet-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-violet-700 transition">Next</button>
         </div>
     </div>
 
     <script>
-        // --- HIGH-FIDELITY AI SIMULATION DATA ---
-        const simulatedAIReports = {
-            "Bengaluru": {
-                title: "Market Entry Report: Bengaluru",
-                audience: "<strong>Target Audience: Tech Professionals & Start-up Founders.</strong> Focus on tech-savvy individuals aged 28-45 who value efficiency, performance, and modern features. Highlight EV options and smart car technology.",
-                partnerships: "<strong>Partnership Strategy: Premium & EV Dealerships.</strong> Prioritize partnerships with dealers for brands like Tesla, Hyundai (Ioniq 5), Kia (EV6), and luxury brands (Mercedes, BMW) located in tech hubs like Koramangala and Whitefield.",
-                marketing: "<strong>Marketing Outreach: Digital & Corporate Channels.</strong> Launch targeted ad campaigns on LinkedIn and tech-focused Instagram pages. Establish corporate tie-ups with major tech parks to offer exclusive consultation sessions."
-            },
-            "Pune": {
-                title: "Market Entry Report: Pune",
-                audience: "<strong>Target Audience: Manufacturing Professionals & Families.</strong> Focus on established professionals in the automotive and manufacturing sectors, and families looking for reliable, spacious SUVs and sedans.",
-                partnerships: "<strong>Partnership Strategy: Major Domestic & SUV Brands.</strong> Forge strong relationships with Mahindra, Tata Motors, and Maruti Suzuki Arena/Nexa dealerships. Partner with well-regarded accessory shops in the PCMC area.",
-                marketing: "<strong>Marketing Outreach: Community & Referral-Based.</strong> Engage in local automotive clubs and communities on Facebook. Launch a strong referral program to leverage word-of-mouth from the city's established professional network."
-            },
-            "Chennai": {
-                title: "Market Entry Report: Chennai",
-                audience: "<strong>Target Audience: Industrialists & Traditional Buyers.</strong> Focus on business owners and established families who prioritize durability, low maintenance, and brand reputation. Strong market for sedans and reliable hatchbacks.",
-                partnerships: "<strong>Partnership Strategy: Legacy & High-Volume Dealerships.</strong> Build partnerships with top dealers for Toyota, Honda, and Hyundai. Also, connect with respected local service centers for post-sale tie-ups.",
-                marketing: "<strong>Marketing Outreach: Trust-Building & Vernacular Content.</strong> Use customer testimonials and reviews as the primary marketing tool. Create content in both English and Tamil to build trust and connect with a wider audience."
-            },
-            "Mumbai": {
-                title: "Market Entry Report: Mumbai",
-                audience: "<strong>Target Audience: Finance Professionals & Media Personalities.</strong> Focus on high-income individuals looking for luxury, status, and compact cars suitable for city traffic. Strong interest in the latest models and premium features.",
-                partnerships: "<strong>Partnership Strategy: Luxury & Compact Car Dealerships.</strong> Secure partnerships with dealers of Audi, Mercedes-Benz, and BMW in South Mumbai. Also, focus on dealers for compact SUVs and premium hatchbacks.",
-                marketing: "<strong>Marketing Outreach: Lifestyle & Influencer Marketing.</strong> Collaborate with lifestyle and automotive influencers on Instagram. Host exclusive preview events for new luxury car launches with our partner dealers."
-            },
-            "Hyderabad": {
-                title: "Market Entry Report: Hyderabad (Home Market)",
-                audience: "<strong>Target Audience: IT Professionals & Affluent Families.</strong> A diverse market with strong demand for both tech-forward SUVs and premium luxury vehicles. Focus on clients who value a hassle-free, premium service experience.",
-                partnerships: "<strong>Partnership Strategy: Broad-Spectrum Dealerships.</strong> Deepen existing relationships across all major brands, from Maruti Suzuki to luxury imports. Onboard exclusive detailing and modification partners in Jubilee Hills and Gachibowli.",
-                marketing: "<strong>Marketing Outreach: Dominate Digital & Local Events.</strong> Become the top-ranking car consultant on Google for Hyderabad. Sponsor local luxury and lifestyle events to enhance brand visibility and capture high-intent leads."
-            }
-        };
-        
-        const simulatedAIPitches = {
-            "Dealerships": {
-                title: "Pitch for Dealership Partners",
-                content: "DriveWise delivers high-intent, pre-qualified buyers directly to your showroom. Our clients are already informed and ready to purchase, which means a higher conversion rate and a faster sales cycle for your team. Partner with us to access a new stream of serious customers and increase your sales volume."
-            },
-            "Service Providers": {
-                title: "Pitch for Service Partners (Accessories/Detailing)",
-                content: "Partner with DriveWise to become a trusted, recommended vendor for new car owners. We connect you with customers at the exact moment they are looking for accessories, PPF, and detailing services, providing you with a consistent flow of new business without any marketing spend from your side."
-            },
-            "Insurers": {
-                title: "Pitch for Insurance Partners",
-                content: "By partnering with DriveWise, you gain direct access to new car buyers who need insurance. We simplify the process by recommending your best-suited policies to our clients, providing you with highly qualified referrals and streamlining your customer acquisition process."
-            }
-        };
+        // --- Gemini API Caller ---
+        async function callGeminiAPI(prompt, outputElement, buttonElement) {
+            const originalButtonText = buttonElement.innerHTML;
+            buttonElement.disabled = true;
+            outputElement.innerHTML = `<div class="flex justify-center items-center h-full"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-500"></div><p class="ml-3 text-gray-400">Generating...</p></div>`;
 
-        // --- SIMULATED GEMINI API HELPER ---
-        async function callGeminiAPI(type, key) {
-            console.log(`Simulating AI call for ${type}: ${key}`);
-            await new Promise(resolve => setTimeout(resolve, 1200)); // Simulate network delay
-            if (type === 'strategy') {
-                return simulatedAIReports[key] || { title: "Error", audience: "No data found for this city.", partnerships: "", marketing: "" };
-            }
-            if (type === 'pitch') {
-                return simulatedAIPitches[key] || { title: "Error", content: "No data found for this partner type." };
+            const apiKey = ""; // This will be handled by the environment
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{ role: "user", parts: [{ text: prompt }] }]
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API call failed with status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    outputElement.innerHTML = text;
+                } else {
+                    outputElement.innerHTML = `<p class="text-red-400 text-center">Sorry, couldn't generate a response. The model may be unavailable. Please try again later.</p>`;
+                }
+
+            } catch (error) {
+                console.error("Gemini API call error:", error);
+                outputElement.innerHTML = `<p class="text-red-400 text-center">An error occurred. Please check the console and try again.</p>`;
+            } finally {
+                buttonElement.disabled = false;
+                buttonElement.innerHTML = originalButtonText;
             }
         }
+
 
         document.addEventListener('DOMContentLoaded', () => {
             const slides = document.querySelectorAll('.slide');
@@ -301,10 +318,13 @@
             function animateSlideContent(slide) {
                 const elements = slide.querySelectorAll('.slide-content > *');
                 elements.forEach((el, index) => {
+                    // Reset styles for re-animation
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(20px)';
                     setTimeout(() => {
                         el.style.opacity = '1';
                         el.style.transform = 'translateY(0)';
-                    }, (index + 1) * 150);
+                    }, (index + 1) * 200); // Increased delay for more pronounced effect
                 });
             }
 
@@ -337,50 +357,29 @@
                 }
             });
 
-            // --- AI Strategy Generator Logic ---
+            // --- Strategy Generator Logic ---
             const generateStrategyBtn = document.getElementById('generate-strategy-btn');
             const citySelect = document.getElementById('city-select');
             const strategyOutput = document.getElementById('ai-strategy-output');
             
             if (generateStrategyBtn) {
-                generateStrategyBtn.addEventListener('click', async () => {
+                generateStrategyBtn.addEventListener('click', () => {
                     const selectedCity = citySelect.value;
-                    strategyOutput.innerHTML = `<div class="flex justify-center items-center h-full"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div><p class="ml-3 text-gray-400">Generating AI Report for ${selectedCity}...</p></div>`;
-                    const report = await callGeminiAPI('strategy', selectedCity);
-                    strategyOutput.innerHTML = `
-                        <h4 class="text-xl font-bold text-orange-500 mb-4">${report.title}</h4>
-                        <div class="space-y-4">
-                            <div class="bg-gray-700 p-3 rounded-lg">
-                                <h5 class="font-bold text-blue-400">Target Audience Focus</h5>
-                                <p class="text-gray-300 text-sm">${report.audience}</p>
-                            </div>
-                            <div class="bg-gray-700 p-3 rounded-lg">
-                                <h5 class="font-bold text-blue-400">Partnership Strategy</h5>
-                                <p class="text-gray-300 text-sm">${report.partnerships}</p>
-                            </div>
-                            <div class="bg-gray-700 p-3 rounded-lg">
-                                <h5 class="font-bold text-blue-400">Marketing & Outreach</h5>
-                                <p class="text-gray-300 text-sm">${report.marketing}</p>
-                            </div>
-                        </div>
-                    `;
+                    const prompt = `You are a business strategist for DriveWise, a premium car buying concierge service. Generate a concise market entry strategy for the city of ${selectedCity}. The strategy should include three short sections: 'Target Audience Focus', 'Partnership Strategy', and 'Marketing & Outreach'. Keep the tone professional and the points brief and actionable. Use HTML for formatting: a main <h4> title for the report, <h5> for each section title, and <p> for the content. Wrap each section in a div with classes "bg-gray-700/50 p-3 rounded-lg".`;
+                    callGeminiAPI(prompt, strategyOutput, generateStrategyBtn);
                 });
             }
 
-            // --- AI Pitch Generator Logic ---
+            // --- Pitch Generator Logic ---
             const generatePitchBtn = document.getElementById('generate-pitch-btn');
             const partnerSelect = document.getElementById('partner-select');
             const pitchOutput = document.getElementById('ai-pitch-output');
 
             if (generatePitchBtn) {
-                generatePitchBtn.addEventListener('click', async () => {
+                generatePitchBtn.addEventListener('click', () => {
                     const selectedPartner = partnerSelect.value;
-                    pitchOutput.innerHTML = `<div class="flex justify-center items-center h-full"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div><p class="ml-3 text-gray-400">Generating Pitch for ${selectedPartner}...</p></div>`;
-                    const pitch = await callGeminiAPI('pitch', selectedPartner);
-                    pitchOutput.innerHTML = `
-                        <h4 class="text-lg font-bold text-orange-400 mb-2">${pitch.title}</h4>
-                        <p class="text-gray-300">${pitch.content}</p>
-                    `;
+                    const prompt = `You are a partnership manager for DriveWise, a premium car buying concierge service. Write a short, persuasive value proposition pitch for potential partners in the ${selectedPartner} category. The goal is to convince them to partner with DriveWise. Keep it concise, professional, and under 100 words. Use HTML for formatting with a <h4> for the title and <p> for the content.`;
+                    callGeminiAPI(prompt, pitchOutput, generatePitchBtn);
                 });
             }
 
