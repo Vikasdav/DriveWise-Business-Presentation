@@ -3,311 +3,384 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Presentation | DriveWise Consulting</title>
+    <title>Car IQ - Business Presentation</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #111827; /* gray-900 */
-            background-image: radial-gradient(circle at top left, #4c1d95, transparent 40%), radial-gradient(circle at bottom right, #4338ca, transparent 40%);
-            background-attachment: fixed;
-        }
-        .slide {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.6s ease-in-out;
-        }
-        .slide.active {
-            display: flex;
-            opacity: 1;
-        }
-        .slide-content > * {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .progress-bar-fill {
-            transition: width 0.4s ease-in-out;
-        }
-        
-        /* --- Animation & Hover Effects --- */
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-8px); }
-        }
-
-        .illustration-icon {
+            font-family: 'Rajdhani', sans-serif;
+            background: #0f0c29;
+            background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);
+            background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+            color: #e0e0e0;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 64px;
-            height: 64px;
-            border-radius: 9999px;
-            background-color: rgba(139, 92, 246, 0.1); /* violet-500 with alpha */
-            color: #a78bfa; /* violet-400 */
-            font-size: 2rem;
-            flex-shrink: 0;
-            animation: float 4s ease-in-out infinite;
-            transition: all 0.3s ease;
+            min-height: 100vh;
         }
-
-        .interactive-item {
-            transition: all 0.3s ease-in-out;
+        .bg-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
         }
-
-        .interactive-item:hover {
-            transform: translateY(-5px);
-            background-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        .shape {
+            position: absolute;
+            list-style: none;
+            display: block;
+            background: rgba(255, 255, 255, 0.1);
+            animation: animate 20s linear infinite;
+            bottom: -150px;
         }
-
-        button {
-            transition: all 0.2s ease-in-out;
+        .shape:nth-child(1) { left: 10%; width: 80px; height: 80px; animation-delay: 0s; }
+        .shape:nth-child(2) { left: 20%; width: 30px; height: 30px; animation-delay: 1.5s; animation-duration: 10s; }
+        .shape:nth-child(3) { left: 25%; width: 50px; height: 50px; animation-delay: 5.5s; }
+        .shape:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 15s; }
+        .shape:nth-child(5) { left: 65%; width: 20px; height: 20px; animation-delay: 0s; }
+        .shape:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3.5s; }
+        @keyframes animate {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
+            100% { transform: translateY(-1200px) rotate(720deg); opacity: 0; border-radius: 50%; }
         }
-
-        button:hover:not(:disabled) {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+        .presentation-wrapper {
+            width: 100%;
+            max-width: 1000px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        .ai-output-area {
-            background-color: #1F2937; /* gray-800 */
-            padding: 1rem;
-            margin-top: 1rem;
-            border-radius: 8px;
-            height: 220px; 
-            overflow-y: auto;
-            border: 1px solid #374151;
+        .slide-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
         }
-        /* Custom scrollbar for the new theme */
-        .ai-output-area::-webkit-scrollbar {
-            width: 8px;
+        .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem 3rem;
+            transition: opacity 0.6s ease-in-out;
+            visibility: hidden;
         }
-        .ai-output-area::-webkit-scrollbar-track {
-            background: #374151; /* gray-700 */
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
         }
-        .ai-output-area::-webkit-scrollbar-thumb {
-            background-color: #8b5cf6; /* violet-500 */
-            border-radius: 4px;
+        .slide h1, .slide h2 {
+            text-shadow: 0 0 10px rgba(0, 245, 212, 0.3);
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            transition: background 0.3s ease;
+        }
+        .card:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .highlight-text {
+            color: #00f5d4; 
+        }
+        .progress-bar-fill {
+            transition: width 0.4s ease-in-out;
+            background-color: #00f5d4;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+        }
+        .comparison-table {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .comparison-table .feature-col {
+            text-align: left;
+            font-weight: bold;
+            padding: 0.75rem;
+        }
+        .comparison-table .our-col {
+            text-align: center;
+            font-weight: bold;
+            color: #00f5d4;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+        }
+        .nav-button {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
         }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen p-4">
+<body>
+    <div class="bg-shapes">
+        <li class="shape"></li>
+        <li class="shape"></li>
+        <li class="shape"></li>
+        <li class="shape"></li>
+        <li class="shape"></li>
+        <li class="shape"></li>
+    </div>
 
-    <div class="w-full max-w-4xl bg-gray-900/40 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden">
-        <!-- Slide Container -->
-        <div id="presentation-container" class="relative w-full h-[550px]">
+    <div class="presentation-wrapper">
+        <div class="slide-container">
             
-            <!-- Slide 1: Title Slide -->
-            <div class="slide active absolute inset-0 flex-col items-center justify-center text-center p-8">
-                <div class="slide-content w-full flex flex-col items-center">
-                    <h1 class="text-6xl font-extrabold text-violet-500">DriveWise</h1>
-                    <p class="mt-4 text-2xl text-gray-300">Your Personal Guide to the Perfect Car</p>
-                    <p class="mt-8 text-lg border-t border-gray-700 pt-4 text-white">A Business Plan Presentation</p>
-                </div>
+            <!-- Slide 1: Title -->
+            <div class="slide active text-center">
+                <h1 class="text-7xl md:text-8xl font-black tracking-wider mb-2 text-white">Car IQ</h1>
+                <p class="text-2xl md:text-3xl font-light highlight-text">From Hatchbacks to Hypercars — We Connect You</p>
+                <p class="mt-8 text-lg text-gray-300 border-t border-gray-700 pt-4">An Investor Presentation</p>
             </div>
 
             <!-- Slide 2: The Problem -->
-            <div class="slide absolute inset-0 flex-col justify-center p-12 text-white">
-                <div class="slide-content w-full">
-                    <h2 class="text-4xl font-bold text-gray-100 mb-8">The Modern Car Buyer's Dilemma</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
-                        <div class="flex items-start">
-                            <div class="illustration-icon mr-4">🤔</div>
-                            <div>
-                                <h3 class="font-bold text-violet-400">Choice Overload</h3>
-                                <p class="text-gray-300">Buyers are confused by hundreds of models, variants, and features.</p>
-                            </div>
+            <div class="slide">
+                <h2 class="text-4xl font-bold mb-4 text-white text-center">The Modern Car Buyer's Dilemma</h2>
+                <p class="text-lg mb-8 max-w-3xl mx-auto text-center text-gray-300">The car buying journey is broken. Customers face a confusing, frustrating, and opaque process that creates anxiety and distrust.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="text-center p-4 card rounded-lg">
+                        <p class="text-5xl mb-2">🤔</p>
+                        <h3 class="font-bold text-xl highlight-text">Choice Overload</h3>
+                        <p>Buyers are paralyzed by hundreds of models and variants.</p>
+                    </div>
+                    <div class="text-center p-4 card rounded-lg">
+                        <p class="text-5xl mb-2">⏳</p>
+                        <h3 class="font-bold text-xl highlight-text">Wasted Time</h3>
+                        <p>Endless dealership visits lead to frustration and pressure.</p>
+                    </div>
+                    <div class="text-center p-4 card rounded-lg">
+                        <p class="text-5xl mb-2">💸</p>
+                        <h3 class="font-bold text-xl highlight-text">Hidden Costs</h3>
+                        <p>Unclear post-sale expenses and overpriced add-ons.</p>
+                    </div>
+                    <div class="text-center p-4 card rounded-lg">
+                        <p class="text-5xl mb-2">❓</p>
+                        <h3 class="font-bold text-xl highlight-text">Lack of Transparency</h3>
+                        <p>Complex processes and unclear timelines build distrust.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: The Solution -->
+            <div class="slide">
+                <h2 class="text-4xl font-bold mb-6 text-center text-white">Our Solution: A One-Stop Concierge Service</h2>
+                <p class="text-center text-lg mb-8 max-w-3xl mx-auto text-gray-300">Car IQ provides a complete, end-to-end service that simplifies the entire car ownership lifecycle, from initial thought to post-sale support.</p>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
+                    <div class="card rounded-lg p-4">Personalized Recommendations</div>
+                    <div class="card rounded-lg p-4">Best Deal Facilitation</div>
+                    <div class="card rounded-lg p-4">Unbiased Insurance Consultation</div>
+                    <div class="card rounded-lg p-4">Delivery Tracking & Follow-up</div>
+                    <div class="card rounded-lg p-4">Free PDI Checks</div>
+                    <div class="card rounded-lg p-4">Post-Sale Accessory Guidance</div>
+                    <div class="card rounded-lg p-4 highlight-text font-bold md:col-span-3">VIP Concierge Package</div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Target Audience -->
+            <div class="slide">
+                <h2 class="text-4xl font-bold mb-6 text-center text-white">Our Target Audience</h2>
+                <p class="text-center text-lg mb-8 max-w-3xl mx-auto text-gray-300">We cater to a wide spectrum of car buyers, understanding the unique needs of each segment.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="card rounded-lg p-6 text-center">
+                        <p class="text-5xl mb-2">👨‍👩‍👧‍👦</p>
+                        <h3 class="font-bold text-xl highlight-text">Families</h3>
+                        <p>Seeking safety, space, and reliability.</p>
+                    </div>
+                    <div class="card rounded-lg p-6 text-center">
+                        <p class="text-5xl mb-2">💼</p>
+                        <h3 class="font-bold text-xl highlight-text">Professionals</h3>
+                        <p>Valuing performance, technology, and status.</p>
+                    </div>
+                    <div class="card rounded-lg p-6 text-center">
+                        <p class="text-5xl mb-2">✨</p>
+                        <h3 class="font-bold text-xl highlight-text">Enthusiasts</h3>
+                        <p>Looking for rare finds and unique performance cars.</p>
+                    </div>
+                    <div class="card rounded-lg p-6 text-center">
+                        <p class="text-5xl mb-2">🏢</p>
+                        <h3 class="font-bold text-xl highlight-text">Businesses</h3>
+                        <p>Needing fleet solutions and commercial vehicles.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Competitive Advantage -->
+            <div class="slide">
+                <h2 class="text-4xl font-bold mb-8 text-center text-white">The Car IQ Advantage</h2>
+                <div class="max-w-2xl mx-auto">
+                    <div class="comparison-table">
+                        <div class="feature-col">Unbiased Advice</div>
+                        <div class="our-col">✔️</div>
+                        <div class="feature-col">Time & Cost Savings</div>
+                        <div class="our-col">✔️</div>
+                        <div class="feature-col">End-to-End Service</div>
+                        <div class="our-col">✔️</div>
+                        <div class="feature-col">Access to Network Deals</div>
+                        <div class="our-col">✔️</div>
+                        <div class="feature-col">Post-Sale Support</div>
+                        <div class="our-col">✔️</div>
+                    </div>
+                    <p class="text-center mt-6 text-gray-300">Unlike traditional dealerships or online portals that are commission-driven and fragmented, Car IQ acts as the client's trusted advocate from start to finish.</p>
+                </div>
+            </div>
+
+            <!-- Slide 6: The Process -->
+            <div class="slide">
+                <h2 class="text-4xl font-bold mb-8 text-center text-white">The Car IQ Customer Journey</h2>
+                <div class="flex flex-col lg:flex-row items-center justify-between text-center w-full gap-4">
+                    <div class="card p-4 rounded-lg flex-1">
+                        <h3 class="font-bold text-lg highlight-text">1. Consultation</h3>
+                        <p class="text-sm">We understand the client's budget, needs, and preferences.</p>
+                    </div>
+                    <div class="text-2xl text-gray-500 transform rotate-90 lg:rotate-0">→</div>
+                    <div class="card p-4 rounded-lg flex-1">
+                        <h3 class="font-bold text-lg highlight-text">2. Recommendation</h3>
+                        <p class="text-sm">We provide a shortlist of the top 3 best-fit cars.</p>
+                    </div>
+                    <div class="text-2xl text-gray-500 transform rotate-90 lg:rotate-0">→</div>
+                    <div class="card p-4 rounded-lg flex-1">
+                        <h3 class="font-bold text-lg highlight-text">3. Facilitation</h3>
+                        <p class="text-sm">We secure the best deal from our partner network.</p>
+                    </div>
+                    <div class="text-2xl text-gray-500 transform rotate-90 lg:rotate-0">→</div>
+                    <div class="card p-4 rounded-lg flex-1">
+                        <h3 class="font-bold text-lg highlight-text">4. Delivery & Beyond</h3>
+                        <p class="text-sm">We track delivery and assist with all post-sale needs.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 7: Revenue Model -->
+            <div class="slide">
+                <h2 class="text-4xl font-bold mb-2 text-center text-white">Our Win-Win Revenue Model</h2>
+                <p class="text-center text-lg mb-6 max-w-3xl mx-auto text-gray-300">Our revenue is generated by creating value for both our clients and our partners, ensuring a sustainable and scalable business.</p>
+                <div class="chart-container" style="max-width: 450px;">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Slide 8: Monetization Strategy -->
+            <div class="slide">
+                <h2 class="text-4xl font-bold mb-6 text-center text-white">Monetization Strategy</h2>
+                <p class="text-center text-lg mb-8 max-w-3xl mx-auto text-gray-300">We employ a multi-faceted approach to generate revenue, ensuring a robust and diversified financial foundation.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="card p-4">
+                        <h3 class="font-bold text-xl highlight-text">B2C: Client Service Fees</h3>
+                        <p>A percentage-based commission on the final car value for our standard concierge service. This aligns our goals with the client's—to find the right car at the best price.</p>
+                    </div>
+                    <div class="card p-4">
+                        <h3 class="font-bold text-xl highlight-text">B2B: Partner Subscriptions</h3>
+                        <p>Dealerships, insurers, and accessory vendors subscribe to our platform for access to a steady stream of pre-qualified, high-intent customers, reducing their acquisition costs.</p>
+                    </div>
+                    <div class="card p-4">
+                        <h3 class="font-bold text-xl highlight-text">Premium & VIP Packages</h3>
+                        <p>A flat-fee structure for high-net-worth individuals and enthusiasts seeking rare vehicles, international sourcing, or complete end-to-end management of their purchase.</p>
+                    </div>
+                    <div class="card p-4">
+                        <h3 class="font-bold text-xl highlight-text">Future: Data & Analytics</h3>
+                        <p>Long-term plans to monetize anonymized market data and trend analysis reports for OEMs, financial institutions, and larger automotive industry stakeholders.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 9: Future Growth & Segment Development -->
+            <div class="slide">
+                <h2 class="text-4xl font-bold mb-6 text-center text-white">Future Growth & Segment Development</h2>
+                <p class="text-center text-lg mb-8 max-w-3xl mx-auto text-gray-300">Our vision extends beyond current services. We will innovate within each segment to capture emerging opportunities.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="card p-4">
+                        <h3 class="font-bold text-xl highlight-text">⚡ For Families & Professionals</h3>
+                        <p>EV adoption consulting, including home charging solutions, subsidy guidance, and corporate EV transition programs.</p>
+                    </div>
+                    <div class="card p-4">
+                        <h3 class="font-bold text-xl highlight-text">🏁 For Enthusiasts</h3>
+                        <p>Curated driving experiences, track days, and investment advisory for classic and collectible automobiles.</p>
+                    </div>
+                    <div class="card p-4">
+                        <h3 class="font-bold text-xl highlight-text">📈 For Businesses</h3>
+                        <p>Advanced fleet management solutions, including Total Cost of Ownership (TCO) analysis and fleet electrification strategies.</p>
+                    </div>
+                    <div class="card p-4">
+                        <h3 class="font-bold text-xl highlight-text">🌐 Platform Evolution</h3>
+                        <p>Introducing subscription and fractional ownership models for luxury and premium vehicles through our digital platform.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 10: The Investment Opportunity -->
+            <div class="slide">
+                <h2 class="text-4xl font-bold mb-6 text-center text-white">The Investment Opportunity</h2>
+                <div class="text-center">
+                    <p class="text-2xl text-gray-300">We are seeking</p>
+                    <p class="text-6xl font-bold highlight-text my-4">Seed Capital</p>
+                    <p class="text-2xl text-gray-300 mb-8">to accelerate our growth and scale our operations.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                        <div class="card p-4">
+                            <h3 class="font-bold text-xl highlight-text">Technology</h3>
+                            <p>Build a robust digital matchmaking platform.</p>
                         </div>
-                        <div class="flex items-start">
-                            <div class="illustration-icon mr-4" style="animation-delay: -1s;">⏳</div>
-                            <div>
-                                <h3 class="font-bold text-violet-400">Wasted Time</h3>
-                                <p class="text-gray-300">Endless dealership visits lead to frustration and high-pressure tactics.</p>
-                            </div>
+                        <div class="card p-4">
+                            <h3 class="font-bold text-xl highlight-text">Team Expansion</h3>
+                            <p>Hire key personnel in sales and operations.</p>
                         </div>
-                        <div class="flex items-start">
-                            <div class="illustration-icon mr-4" style="animation-delay: -2s;">💸</div>
-                            <div>
-                                <h3 class="font-bold text-violet-400">Hidden Costs</h3>
-                                <p class="text-gray-300">Overpriced insurance and unclear post-sale expenses cause anxiety.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="illustration-icon mr-4" style="animation-delay: -3s;">❓</div>
-                            <div>
-                                <h3 class="font-bold text-violet-400">Lack of Transparency</h3>
-                                <p class="text-gray-300">Unclear delivery timelines and a complex process build distrust.</p>
-                            </div>
+                        <div class="card p-4">
+                            <h3 class="font-bold text-xl highlight-text">Marketing</h3>
+                            <p>Launch targeted campaigns to build brand awareness.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Slide 3: Our Solution -->
-            <div class="slide absolute inset-0 flex-col justify-center p-12 text-white">
-                <div class="slide-content w-full">
-                    <h2 class="text-4xl font-bold mb-6">Our Solution: An End-to-End Concierge</h2>
-                    <p class="text-lg text-gray-300 mb-6">We provide a complete, one-stop service that covers the entire car ownership lifecycle.</p>
-                    <div class="flex flex-wrap justify-center gap-3 text-center text-sm">
-                        <div class="bg-white/5 border border-white/10 p-3 rounded-lg interactive-item">Personalized Recommendations</div>
-                        <div class="bg-white/5 border border-white/10 p-3 rounded-lg interactive-item">Best Deal Facilitation</div>
-                        <div class="bg-white/5 border border-white/10 p-3 rounded-lg interactive-item">Unbiased Insurance Consultation</div>
-                        <div class="bg-white/5 border border-white/10 p-3 rounded-lg interactive-item">Delivery Tracking & Follow-up</div>
-                        <div class="bg-white/5 border border-white/10 p-3 rounded-lg interactive-item">Free PDI Checks</div>
-                        <div class="bg-white/5 border border-white/10 p-3 rounded-lg interactive-item">Post-Sale Accessory Guidance</div>
-                        <div class="bg-white/5 border border-white/10 p-3 rounded-lg interactive-item">VIP Concierge Package</div>
-                    </div>
+            <!-- Slide 11: Financial Projections -->
+            <div class="slide">
+                 <h2 class="text-4xl font-bold mb-2 text-center text-white">Financial Projections</h2>
+                <p class="text-center text-lg mb-6 max-w-3xl mx-auto text-gray-300">Our model is designed for rapid, scalable growth, with revenue projected to increase significantly over the next three years.</p>
+                <div class="chart-container">
+                    <canvas id="projectionsChart"></canvas>
                 </div>
             </div>
 
-            <!-- Slide 4: Our Process -->
-            <div class="slide absolute inset-0 flex-col justify-center p-12 text-white">
-                <div class="slide-content w-full">
-                    <h2 class="text-4xl font-bold text-gray-100 mb-8">How It Works: The Customer Journey</h2>
-                    <div class="flex flex-col md:flex-row items-center justify-between text-center gap-4">
-                        <div class="w-full md:w-1/4 interactive-item p-4 rounded-lg bg-white/5 border border-white/10">
-                            <div class="illustration-icon mx-auto">1</div>
-                            <h3 class="font-bold mt-2">Consultation</h3>
-                            <p class="text-sm text-gray-300">We understand the client's budget, needs, and preferences.</p>
-                        </div>
-                        <div class="flex-grow text-2xl text-gray-600 hidden md:block">→</div>
-                        <div class="w-full md:w-1/4 interactive-item p-4 rounded-lg bg-white/5 border border-white/10">
-                            <div class="illustration-icon mx-auto" style="animation-delay: -1s;">2</div>
-                            <h3 class="font-bold mt-2">Recommendation</h3>
-                            <p class="text-sm text-gray-300">We provide a shortlist of the top 3 best-fit cars.</p>
-                        </div>
-                        <div class="flex-grow text-2xl text-gray-600 hidden md:block">→</div>
-                        <div class="w-full md:w-1/4 interactive-item p-4 rounded-lg bg-white/5 border border-white/10">
-                            <div class="illustration-icon mx-auto" style="animation-delay: -2s;">3</div>
-                            <h3 class="font-bold mt-2">Facilitation</h3>
-                            <p class="text-sm text-gray-300">We connect with our partner network to secure the best deal.</p>
-                        </div>
-                        <div class="flex-grow text-2xl text-gray-600 hidden md:block">→</div>
-                        <div class="w-full md:w-1/4 interactive-item p-4 rounded-lg bg-white/5 border border-white/10">
-                            <div class="illustration-icon mx-auto" style="animation-delay: -3s;">4</div>
-                            <h3 class="font-bold mt-2">Delivery & Beyond</h3>
-                            <p class="text-sm text-gray-300">We track delivery and assist with post-sale needs like insurance.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Slide 5: Value for Partners (Gemini Powered) -->
-            <div class="slide absolute inset-0 flex-col justify-center p-12 text-white">
-                <div class="slide-content w-full">
-                    <h2 class="text-4xl font-bold mb-4">Value for Partners: A Win-Win Model</h2>
-                    <p class="text-lg text-gray-300 mb-6">We provide high-quality, pre-qualified leads to our trusted partners, driving confirmed sales and new business.</p>
-                    <div class="bg-black/20 backdrop-blur-md border border-white/10 p-6 rounded-lg">
-                        <h3 class="text-2xl font-bold text-violet-400 mb-4 text-center">✨ Partner Pitch Generator</h3>
-                        <div class="flex flex-col sm:flex-row items-center justify-center sm:space-x-4 space-y-4 sm:space-y-0">
-                            <label for="partner-select" class="font-semibold whitespace-nowrap">Select Partner Type:</label>
-                            <select id="partner-select" class="w-full sm:w-auto p-2 border rounded-md bg-gray-700 border-gray-600 text-white">
-                                <option value="Dealerships">Dealerships</option>
-                                <option value="Service Providers">Service Providers</option>
-                                <option value="Insurers">Insurers</option>
-                            </select>
-                            <button id="generate-pitch-btn" class="w-full sm:w-auto bg-violet-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-violet-700 transition">Generate Pitch</button>
-                        </div>
-                        <div id="ai-pitch-output" class="ai-output-area"><p class="text-gray-400 text-center mt-4">Select a partner type to generate a tailored value proposition.</p></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 6: The Road Ahead (Gemini Powered) -->
-            <div class="slide absolute inset-0 flex-col justify-center p-12 text-white">
-                <div class="slide-content w-full">
-                    <h2 class="text-4xl font-bold mb-4 text-center">Business Strategy Dashboard</h2>
-                     <div class="bg-black/20 backdrop-blur-md border border-white/10 p-6 rounded-lg">
-                        <h3 class="text-2xl font-bold text-violet-400 text-center mb-4">✨ Market Strategy Generator</h3>
-                        <div class="flex flex-col sm:flex-row items-center justify-center sm:space-x-4 space-y-4 sm:space-y-0">
-                            <label for="city-select" class="font-semibold whitespace-nowrap">Select Target City:</label>
-                            <select id="city-select" class="w-full sm:w-auto p-2 border rounded-md bg-gray-700 border-gray-600 text-white">
-                                <option value="Bengaluru">Bengaluru</option>
-                                <option value="Pune">Pune</option>
-                                <option value="Chennai">Chennai</option>
-                                <option value="Mumbai">Mumbai</option>
-                                <option value="Hyderabad">Hyderabad</option>
-                            </select>
-                            <button id="generate-strategy-btn" class="w-full sm:w-auto bg-violet-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-violet-700 transition">Generate Report</button>
-                        </div>
-                        <div id="ai-strategy-output" class="ai-output-area"><p class="text-gray-400 text-center mt-4">Select a city and click generate to see a market entry plan.</p></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Slide 7: Call to Action -->
-            <div class="slide absolute inset-0 flex-col items-center justify-center text-center p-8 text-white">
-                <div class="slide-content w-full flex flex-col items-center">
-                    <h2 class="text-5xl font-bold">Thank You</h2>
-                    <p class="mt-4 text-2xl text-gray-300">Let's build the future of car buying.</p>
-                    <p class="mt-8 text-xl text-violet-500">Questions & Discussion</p>
-                </div>
+            <!-- Slide 12: Call to Action / Thank You -->
+            <div class="slide text-center">
+                <h2 class="text-5xl font-black tracking-tight mb-3 text-white">Let's Build the Future of Car Buying.</h2>
+                <p class="text-2xl mb-6 max-w-3xl mx-auto text-gray-300">Thank you for your time. We welcome your questions and discussion.</p>
+                <p class="text-lg text-gray-400 mt-8 border-t border-gray-700 pt-4">Car IQ Co-Founders: Karthik & Vikas</p>
             </div>
 
         </div>
 
         <!-- Navigation & Progress Bar -->
-        <div class="bg-gray-900/20 backdrop-blur-md p-4 flex items-center justify-between border-t border-white/10">
-            <button id="prev-btn" class="bg-gray-700 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-600 transition disabled:opacity-50 disabled:cursor-not-allowed">Previous</button>
+        <div class="bg-black bg-opacity-20 p-4 flex items-center justify-between">
+            <button id="prev-btn" class="nav-button bg-[#480ca8] hover:bg-[#5e2ab2] text-white font-bold py-2 px-6 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed">Previous</button>
             <div class="flex-grow mx-4">
-                <div class="w-full bg-gray-700 rounded-full h-2.5">
-                    <div id="progress-bar" class="bg-violet-500 h-2.5 rounded-full progress-bar-fill"></div>
+                <div class="w-full bg-black bg-opacity-25 rounded-full h-2.5">
+                    <div id="progress-bar" class="progress-bar-fill h-2.5 rounded-full"></div>
                 </div>
             </div>
-            <button id="next-btn" class="bg-violet-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-violet-700 transition">Next</button>
+            <button id="next-btn" class="nav-button bg-[#00f5d4] hover:bg-[#00e0c1] text-black font-bold py-2 px-6 rounded-lg transition">Next</button>
         </div>
     </div>
 
     <script>
-        // --- Gemini API Caller ---
-        async function callGeminiAPI(prompt, outputElement, buttonElement) {
-            const originalButtonText = buttonElement.innerHTML;
-            buttonElement.disabled = true;
-            outputElement.innerHTML = `<div class="flex justify-center items-center h-full"><div class="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-500"></div><p class="ml-3 text-gray-400">Generating...</p></div>`;
-
-            const apiKey = ""; // This will be handled by the environment
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-            
-            const payload = {
-                contents: [{ role: "user", parts: [{ text: prompt }] }]
-            };
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`API call failed with status: ${response.status}`);
-                }
-
-                const result = await response.json();
-                
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const text = result.candidates[0].content.parts[0].text;
-                    outputElement.innerHTML = text;
-                } else {
-                    outputElement.innerHTML = `<p class="text-red-400 text-center">Sorry, couldn't generate a response. The model may be unavailable. Please try again later.</p>`;
-                }
-
-            } catch (error) {
-                console.error("Gemini API call error:", error);
-                outputElement.innerHTML = `<p class="text-red-400 text-center">An error occurred. Please check the console and try again.</p>`;
-            } finally {
-                buttonElement.disabled = false;
-                buttonElement.innerHTML = originalButtonText;
-            }
-        }
-
-
         document.addEventListener('DOMContentLoaded', () => {
             const slides = document.querySelectorAll('.slide');
             const prevBtn = document.getElementById('prev-btn');
@@ -315,25 +388,9 @@
             const progressBar = document.getElementById('progress-bar');
             let currentSlide = 0;
 
-            function animateSlideContent(slide) {
-                const elements = slide.querySelectorAll('.slide-content > *');
-                elements.forEach((el, index) => {
-                    // Reset styles for re-animation
-                    el.style.opacity = '0';
-                    el.style.transform = 'translateY(20px)';
-                    setTimeout(() => {
-                        el.style.opacity = '1';
-                        el.style.transform = 'translateY(0)';
-                    }, (index + 1) * 200); // Increased delay for more pronounced effect
-                });
-            }
-
             function updatePresentation() {
                 slides.forEach((slide, index) => {
                     slide.classList.toggle('active', index === currentSlide);
-                    if (index === currentSlide) {
-                        animateSlideContent(slide);
-                    }
                 });
                 const progressPercentage = (currentSlide / (slides.length - 1)) * 100;
                 progressBar.style.width = `${progressPercentage}%`;
@@ -357,35 +414,125 @@
                 }
             });
 
-            // --- Strategy Generator Logic ---
-            const generateStrategyBtn = document.getElementById('generate-strategy-btn');
-            const citySelect = document.getElementById('city-select');
-            const strategyOutput = document.getElementById('ai-strategy-output');
-            
-            if (generateStrategyBtn) {
-                generateStrategyBtn.addEventListener('click', () => {
-                    const selectedCity = citySelect.value;
-                    const prompt = `You are a business strategist for DriveWise, a premium car buying concierge service. Generate a concise market entry strategy for the city of ${selectedCity}. The strategy should include three short sections: 'Target Audience Focus', 'Partnership Strategy', and 'Marketing & Outreach'. Keep the tone professional and the points brief and actionable. Use HTML for formatting: a main <h4> title for the report, <h5> for each section title, and <p> for the content. Wrap each section in a div with classes "bg-gray-700/50 p-3 rounded-lg".`;
-                    callGeminiAPI(prompt, strategyOutput, generateStrategyBtn);
-                });
-            }
-
-            // --- Pitch Generator Logic ---
-            const generatePitchBtn = document.getElementById('generate-pitch-btn');
-            const partnerSelect = document.getElementById('partner-select');
-            const pitchOutput = document.getElementById('ai-pitch-output');
-
-            if (generatePitchBtn) {
-                generatePitchBtn.addEventListener('click', () => {
-                    const selectedPartner = partnerSelect.value;
-                    const prompt = `You are a partnership manager for DriveWise, a premium car buying concierge service. Write a short, persuasive value proposition pitch for potential partners in the ${selectedPartner} category. The goal is to convince them to partner with DriveWise. Keep it concise, professional, and under 100 words. Use HTML for formatting with a <h4> for the title and <p> for the content.`;
-                    callGeminiAPI(prompt, pitchOutput, generatePitchBtn);
-                });
-            }
-
             updatePresentation();
         });
-    </script>
 
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        };
+        
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#e0e0e0',
+                        font: { 
+                            size: 12,
+                            family: 'Rajdhani',
+                            weight: '600'
+                        },
+                        padding: 15
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback,
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) { label += ': '; }
+                            if (context.parsed.y !== null) {
+                                label += new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0 }).format(context.parsed.y);
+                            } else if (context.parsed !== null) {
+                                label += context.parsed + '%';
+                            }
+                            return label;
+                        }
+                    },
+                    backgroundColor: 'rgba(0,0,0,0.7)',
+                    titleColor: '#00f5d4',
+                    bodyColor: '#e0e0e0',
+                    titleFont: { size: 16, weight: 'bold', family: 'Rajdhani' },
+                    bodyFont: { size: 14, family: 'Rajdhani' },
+                    padding: 12,
+                    cornerRadius: 4,
+                    displayColors: false
+                }
+            }
+        };
+
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        new Chart(revenueCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Transaction Commission', 'Dealer Consulting', 'Premium Acquisition Fees', 'Subscriptions'],
+                datasets: [{
+                    label: 'Revenue Mix',
+                    data: [45, 30, 15, 10],
+                    backgroundColor: ['#00f5d4', '#8ac926', '#fee440', '#f8961e'],
+                    borderColor: 'rgba(0, 0, 0, 0.2)',
+                    borderWidth: 2,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                 plugins: { ...commonChartOptions.plugins, tooltip: { ...commonChartOptions.plugins.tooltip, callbacks: { ...commonChartOptions.plugins.tooltip.callbacks, label: function(context) {
+                    let label = context.label || '';
+                    if (label) { label += ': '; }
+                    if (context.parsed !== null) { label += context.parsed + '%'; }
+                    return label;
+                 }}}}
+            }
+        });
+
+        const projectionsCtx = document.getElementById('projectionsChart').getContext('2d');
+        new Chart(projectionsCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Year 1', 'Year 2', 'Year 3'],
+                datasets: [{
+                    label: 'Projected Revenue (in Lakhs)',
+                    data: [75, 250, 800],
+                    backgroundColor: ['#00f5d4', '#8ac926', '#fee440'],
+                    borderColor: 'rgba(0, 0, 0, 0.2)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#e0e0e0',
+                            callback: function(value, index, values) {
+                                return '₹' + value + 'L';
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    x: {
+                         ticks: {
+                            color: '#e0e0e0'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
